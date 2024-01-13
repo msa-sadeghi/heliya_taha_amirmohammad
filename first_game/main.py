@@ -4,7 +4,7 @@ pygame.init()
 
 
 def game_over():
-    global score, lives
+    global score, lives, running
     score = 0
     lives = 3
     game_over_text = my_font48.render("Game Over, Press Enter to play again", True, (123,10,245))
@@ -19,12 +19,8 @@ def game_over():
                 if event.key == pygame.K_RETURN:
                     paused = False
             if event.type == pygame.QUIT:
-                pass
-
-
-
-
-
+                paused = False
+                running = False
 
 score = 0
 lives = 3
@@ -35,11 +31,11 @@ SCREEN_HEIGHT = 780
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 FPS = 60
 CLOCK = pygame.time.Clock()
-my_font = pygame.font.Font("dragonfont.otf", 72)
+my_font = pygame.font.Font("assets/dragonfont.otf", 72)
 welcome_text = my_font.render("Welcome To my Game", True, (170,10,190))
 welcome_rect = welcome_text.get_rect(center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
 
-my_font48 = pygame.font.Font("dragonfont.otf", 48)
+my_font48 = pygame.font.Font("assets/dragonfont.otf", 48)
 score_text = my_font48.render(f"Score: {score}", True, (10,230,190))
 score_rect = score_text.get_rect(topleft=(0,0))
 
@@ -49,12 +45,12 @@ lives_rect = lives_text.get_rect(topright = (SCREEN_WIDTH, 0))
 
 start_time = pygame.time.get_ticks()
 
-wolf_img = pygame.image.load("wolf.png")
+wolf_img = pygame.image.load("assets/wolf.png")
 wolf_rect = wolf_img.get_rect()
 wolf_rect.bottomright = (SCREEN_WIDTH, SCREEN_HEIGHT)
 
 # load sheep image
-sheep_img = pygame.image.load("sheep.png")
+sheep_img = pygame.image.load("assets/sheep.png")
 sheep_img = pygame.transform.flip(sheep_img, True, False)
 sheep_rect = sheep_img.get_rect()
 sheep_rect.left = 0
@@ -63,10 +59,10 @@ sheep_velocity = 5
 wolf_velocity = 4
 
 
-pygame.mixer.music.load("Bad Piggies Theme.mp3")
+pygame.mixer.music.load("assets/Bad Piggies Theme.mp3")
 # pygame.mixer.music.set_volume(0.9)
 pygame.mixer.music.play(-1)
-loss_sound = pygame.mixer.Sound("loss.wav")
+loss_sound = pygame.mixer.Sound("assets/loss.wav")
 running = True
 while running:
     # مدیریت کردن رویدادها
