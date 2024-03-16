@@ -25,7 +25,7 @@ while running:
     
     game_world.draw(screen)    
     my_player.draw(screen)  
-    my_player.update()
+    my_player.update(game_world.tile_list)
 
 
     pygame.display.update()
