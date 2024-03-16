@@ -16,7 +16,7 @@ class Player(Sprite):
         
         self.frame_index = 0
         self.counter = 0
-        self.image = self.right_idle[self.frame_index]
+        self.image = self.right_images[self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.topleft = (x,y)
         self.vel_y = 0
@@ -28,8 +28,30 @@ class Player(Sprite):
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
-
+        
     def update(self):
+        dx = 0
+        dy = 0
+        
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            dx -= 5
+        if keys[pygame.K_RIGHT]:
+            dx += 5
+            
+        if keys[pygame.K_SPACE]:
+            self.vel_y = -15
+        
+            
+        dy += self.vel_y
+        self.vel_y += 1
+        self.rect.x += dx
+        self.rect.y += dy
+        
+            
+        
+
+  
 
       
 
