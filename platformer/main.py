@@ -3,18 +3,34 @@ from constants import *
 from world import World
 from player import Player
 from button import Button
-from levels.level_creator import world_data
+import pickle
+
+f = open("levels\level1", "rb")
+world_data = pickle.load(f)
+
+
+def change_level(level):
+    door_group.empty()
+    enemy_group.empty()
+    f = open(f"levels\level{level}", "rb")
+    world_data = pickle.load(f)
+    game_world= World(world_data, enemy_group, door_group)
+    return game_world
+    
+
+
 pygame.init()
 restart_btn = Button(screen_width/2, screen_height/2)
 screen = pygame.display.set_mode((screen_width, screen_height))
 
 clock = pygame.time.Clock()
 enemy_group = pygame.sprite.Group()
+door_group = pygame.sprite.Group()
 
 bg_img = pygame.image.load("assets/sky.png")
 
-game_world= World(world_data, enemy_group)
-my_player = Player(100, 500)
+game_world= World(world_data, enemy_group, door_group)
+my_player = Player(100, 300)
 
 running = True
 while running:
@@ -30,8 +46,14 @@ while running:
     if my_player.alive:
         enemy_group.update()
     enemy_group.draw(screen)
+    door_group.draw(screen)
     if not my_player.alive:
         restart_btn.draw(screen)
+        if restart_btn.click():
+            my_player.__init__(100,300)
+            enemy_group.empty()
+            door_group.empty()
+            game_world= World(world_data, enemy_group, door_group)
 
     pygame.display.update()
     clock.tick(FPS)
