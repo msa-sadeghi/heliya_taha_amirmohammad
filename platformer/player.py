@@ -31,7 +31,7 @@ class Player(Sprite):
     def draw(self, screen):
         screen.blit(self.image, self.rect)
         
-    def update(self, tiles, enemy_group):
+    def update(self, tiles, enemy_group, door_group, game_world):
         dx = 0
         dy = 0        
         if self.alive:
@@ -60,6 +60,8 @@ class Player(Sprite):
                     dy = 0
             if pygame.sprite.spritecollide(self, enemy_group, True):
                 self.alive = False
+            if pygame.sprite.spritecollide(self, door_group, False):
+                game_world.next_level = True
             self.animation() 
         if not self.alive:
             self.image = self.dead_image

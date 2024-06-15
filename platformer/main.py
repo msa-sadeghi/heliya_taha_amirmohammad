@@ -10,6 +10,7 @@ world_data = pickle.load(f)
 
 
 def change_level(level):
+    my_player.__init__(100, 300)
     door_group.empty()
     enemy_group.empty()
     f = open(f"levels\level{level}", "rb")
@@ -31,7 +32,7 @@ bg_img = pygame.image.load("assets/sky.png")
 
 game_world= World(world_data, enemy_group, door_group)
 my_player = Player(100, 300)
-
+level = 1
 running = True
 while running:
     for event in pygame.event.get():
@@ -42,9 +43,14 @@ while running:
     
     game_world.draw(screen)    
     my_player.draw(screen)  
-    my_player.update(game_world.tile_list, enemy_group)
+    my_player.update(game_world.tile_list, enemy_group, door_group, game_world)
     if my_player.alive:
         enemy_group.update()
+        if game_world.next_level:
+            level += 1
+            game_world = change_level(level)
+            game_world.next_level = False
+            
     enemy_group.draw(screen)
     door_group.draw(screen)
     if not my_player.alive:

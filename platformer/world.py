@@ -7,7 +7,7 @@ class World:
         self.tile_list = []
         dirt_img = pygame.image.load("assets/dirt.png")
         grass_img = pygame.image.load("assets/grass.png")
-        
+        self.next_level = False
         for row in range(len(data)):
             for col in range(len(data[row])):
                 if data[row][col] == 1:
