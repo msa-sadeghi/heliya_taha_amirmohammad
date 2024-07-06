@@ -22,15 +22,20 @@ class Castle:
         self.max_health = self.health
         self.score = 0
         self.money = 0
+        self.shoot_or_not = False
         
     def draw(self, screen):
         screen.blit(self.image, self.rect)
         
     def shoot(self, group):
-        if pygame.mouse.get_pressed()[0]:
+        temp = pygame.mouse.get_pressed()[0]
+        if temp and not self.shoot_or_not:
+            self.shoot_or_not = True
             mouse_pos = pygame.mouse.get_pos()
             y_dist = -(mouse_pos[1] - self.rect.midleft[1])
             x_dist = mouse_pos[0] - self.rect.midleft[0]
             angle = math.atan2(y_dist, x_dist)
             Bullet(self.rect.midleft[0], self.rect.midleft[1],angle, group)
+        if not temp:
+            self.shoot_or_not = False
             
