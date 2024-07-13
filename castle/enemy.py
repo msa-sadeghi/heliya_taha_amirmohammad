@@ -24,9 +24,12 @@ class Enemy(Sprite):
         self.rect = self.image.get_rect(topleft = (x,y))
         self.image_number = 0
         self.action = "walk"
-            
+        group.add(self)
+    def update(self)         :
+        self.move()
+        self.animation()
     def move(self):
-        pass
+        self.rect.x += self.speed
     def animation(self):
         pass
             
