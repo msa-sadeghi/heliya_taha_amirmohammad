@@ -17,13 +17,14 @@ class Enemy(Sprite):
                 img = pygame.image.load(f"assets/enemies/{self.type}/{animation}/{i}.png")
                 img_w = img.get_width()
                 img_h = img.get_height()
-                img = pygame.transform.scale(img, (img_w * 0.5, img_h * 0.5))
+                img = pygame.transform.scale(img, (img_w * 0.3, img_h * 0.3))
                 temp_list.append(img)
             self.all_images[animation] = temp_list
         self.image = self.all_images["walk"][0]
         self.rect = self.image.get_rect(topleft = (x,y))
         self.image_number = 0
         self.action = "walk"
+        self.update_time = 0
         group.add(self)
     def update(self)         :
         self.move()
@@ -31,7 +32,13 @@ class Enemy(Sprite):
     def move(self):
         self.rect.x += self.speed
     def animation(self):
-        pass
+        self.image = self.all_images[self.action][self.image_number]
+        if pygame.time.get_ticks() - self.update_time > 100:
+            self.update_time = pygame.time.get_ticks()
+            self.image_number += 1
+            if self.image_number >=len(self.all_images[self.action]):
+                self.image_number = 0            
+        
             
         
       
