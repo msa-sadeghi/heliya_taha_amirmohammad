@@ -26,8 +26,18 @@ class Enemy(Sprite):
         self.action = "walk"
         self.update_time = 0
         group.add(self)
-    def update(self)         :
-        self.move()
+        self.last_injury_time = 0
+    def update(self, castle)         :
+        if self.rect.colliderect(castle.rect):
+            self.action = "attack"
+            if pygame.time.get_ticks() - self.last_injury_time > 1500:
+                self.last_injury_time = pygame.time.get_ticks()
+                castle.health -= 10
+                if castle.health < 0:
+                    castle.health = 0
+        else:
+            self.action = "walk"
+            self.move()
         self.animation()
     def move(self):
         self.rect.x += self.speed
