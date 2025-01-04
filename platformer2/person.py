@@ -34,6 +34,9 @@ class Person(Sprite):
         self.last_image_change_time = 0
         self.firection = 1
         self.flip = False
+        self.vely = 0
+        self.in_air = False
+        
 
     def draw(self, screen):
         self.animation()
@@ -50,6 +53,7 @@ class Person(Sprite):
 
     def move(self, moving_left, moving_right):
         dx = 0
+        dy = 0
         if moving_left:
             self.direction = -1
             self.flip = True
@@ -58,7 +62,16 @@ class Person(Sprite):
             self.direction = 1
             self.flip = False
             dx += 5
-
+        
+        if self.rect.bottom + dy > 300:
+            dy = 300 - self.rect.bottom
+            self.vely = 0
+            self.in_air = False
+        
+        
+        dy += self.vely
+        self.vely += 1
+        self.rect.y += dy
         self.rect.x += dx
 
     def change_animation_type(self, new_type):
@@ -66,3 +79,8 @@ class Person(Sprite):
             self.action = new_type
             self.image_number = 0
             self.last_image_change_time = 0
+            
+            
+    def shoot(self):
+        #TODO
+        pass
