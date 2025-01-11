@@ -1,7 +1,8 @@
 from pygame.sprite import Sprite
 from config import *
 import os
-
+from bullet import Bullet
+from grenade import Grenade
 
 class Person(Sprite):
     def __init__(self, type_, x, y, ammo, grenades):
@@ -32,7 +33,8 @@ class Person(Sprite):
         self.image = self.image_dict[self.action][0]
         self.rect = self.image.get_rect(topleft=(x, y))
         self.last_image_change_time = 0
-        self.firection = 1
+        self.last_shoot_time = 0
+        self.direction = 1
         self.flip = False
         self.vely = 0
         self.in_air = False
@@ -81,6 +83,16 @@ class Person(Sprite):
             self.last_image_change_time = 0
             
             
-    def shoot(self):
-        #TODO
-        pass
+    def shoot(self,type_of_weapon, weapon_group):
+        if type_of_weapon == "bullet":
+            if self.ammo > 0 and pygame.time.get_ticks() - self.last_image_change_time > 100:
+                self.ammo -= 1
+                self.last_image_change_time = pygame.time.get_ticks()
+                Bullet(self.rect.centerx + self.direction * self.rect.size[0]//2, 
+                    self.rect.centery -5, self.type, weapon_group, self.direction
+                    )
+        elif type_of_weapon == "grenade":
+            if self.grenades > 0 and pygame.time.get_ticks() - self.last_image_change_time > 100:
+                self.grenades -= 1
+                Grenade(self.rect.centerx + self.direction * self.rect.size[0]//2, 
+                        self.rect.centery -5, weapon_group, self.direction)
