@@ -3,6 +3,7 @@ from person import Person
 clock = pygame.time.Clock()
 player_bullet_group = pygame.sprite.Group()
 player_grenade_group = pygame.sprite.Group()
+explosion_group = pygame.sprite.Group()
 player = Person('player', 100, 300, 60, 10)
 moving_left = False
 moving_right = False
@@ -40,7 +41,7 @@ while running:
     if player.alive:
         if moving_left or moving_right:
             player.change_animation_type("Run")
-        elif jump:
+        elif jump and player.in_air == False:
             player.vely = -15
             player.in_air = True
             
@@ -60,7 +61,9 @@ while running:
     player.move(moving_left, moving_right)    
     player_bullet_group.update()
     player_bullet_group.draw(screen) 
-    player_grenade_group.update()
+    player_grenade_group.update(explosion_group)
     player_grenade_group.draw(screen) 
+    explosion_group.update()
+    explosion_group.draw(screen)
     pygame.display.update()
     clock.tick(FPS)
