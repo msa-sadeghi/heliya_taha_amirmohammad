@@ -3,6 +3,7 @@ from config import *
 import os
 from bullet import Bullet
 from grenade import Grenade
+import random
 
 class Person(Sprite):
     def __init__(self, type_, x, y, ammo, grenades):
@@ -38,6 +39,9 @@ class Person(Sprite):
         self.flip = False
         self.vely = 0
         self.in_air = False
+        self.enemy_movement_time= 0
+        self.idle = True
+        self.shoot_state = False
         
 
     def draw(self, screen):
@@ -76,6 +80,24 @@ class Person(Sprite):
         self.rect.y += dy
         self.rect.x += dx
 
+    
+    def ai(self, player):
+        d = self.rect.x  - player.rect.x
+        distance = abs(d) 
+        if distance >= 150:
+            if pygame.time.get_ticks() - self.enemy_movement_time > 100:
+                self.enemy_movement_time = pygame.time.get_ticks()
+                if d < 0:
+                    self.move(False, True)
+                else:
+                    self.move(True, False)
+                self.idle = False
+        else:
+            self.idle = True
+            self.shoot_state = True
+            
+    
+    
     def change_animation_type(self, new_type):
         if new_type != self.action:
             self.action = new_type
