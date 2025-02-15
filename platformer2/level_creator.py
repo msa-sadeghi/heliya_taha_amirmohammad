@@ -6,11 +6,16 @@ HEIGHT = 640
 lower_margin = 100
 side_margin = 300
 scroll = 0
-scroll_sp
+scroll_speed = 1
 scroll_left = False
 scroll_right = False
 clock = pygame.time.Clock()
 FPS = 60
+MAX_COLS = 150
+ROWS = 15
+TILE_SIZE = HEIGHT // ROWS
+
+
 screen = pygame.display.set_mode((WIDTH + side_margin, HEIGHT + lower_margin))
 
 pine1_image = pygame.image.load("./assets/images/background/pine1.png")
@@ -27,6 +32,14 @@ def draw_bg():
         screen.blit(pine1_image, (i * sky_width - scroll * 0.5,HEIGHT - pine1_image.get_height() - 150))
         screen.blit(pine2_image, (i * sky_width - scroll * 0.6,HEIGHT - pine2_image.get_height()))
 
+
+def draw_lines():
+    for i in range(MAX_COLS + 1):
+        pygame.draw.line(screen, "white", (i * TILE_SIZE,0), (i * TILE_SIZE, HEIGHT))
+    for i in range(ROWS + 1):
+        pygame.draw.line(screen, "white", (0,i * TILE_SIZE), (WIDTH, i * TILE_SIZE))
+    
+
 running = True
 while running:
     for event in pygame.event.get():
@@ -37,15 +50,20 @@ while running:
                 scroll_left = True
             if event.key == pygame.K_RIGHT:
                 scroll_right = True
+            if event.key == pygame.K_LSHIFT:
+                scroll_speed = 5
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
                 scroll_left = False
             if event.key == pygame.K_RIGHT:
                 scroll_right = False
+            if event.key == pygame.K_LSHIFT:
+                scroll_speed = 1
     if scroll_left and scroll > 0:
-        scroll -= 5            
+        scroll -= 5  * scroll_speed          
     if scroll_right:
-        scroll += 5            
-    draw_bg()        
+        scroll += 5    * scroll_speed        
+    draw_bg() 
+    draw_lines()       
     pygame.display.update()
     clock.tick(FPS)
