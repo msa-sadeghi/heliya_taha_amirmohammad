@@ -35,10 +35,21 @@ def draw_bg():
 
 def draw_lines():
     for i in range(MAX_COLS + 1):
-        pygame.draw.line(screen, "white", (i * TILE_SIZE,0), (i * TILE_SIZE, HEIGHT))
+        pygame.draw.line(screen, "white", (i * TILE_SIZE - scroll,0), (i * TILE_SIZE - scroll, HEIGHT))
     for i in range(ROWS + 1):
         pygame.draw.line(screen, "white", (0,i * TILE_SIZE), (WIDTH, i * TILE_SIZE))
     
+
+images_list = list()
+for i in range(21):
+    img = pygame.image.load(f"./assets/images/tile/{i}.png")
+    images_list.append(img)
+
+buttons_list = list()
+col = 0
+row = 0
+
+
 
 running = True
 while running:
@@ -63,7 +74,8 @@ while running:
         scroll -= 5  * scroll_speed          
     if scroll_right:
         scroll += 5    * scroll_speed        
-    draw_bg() 
+    draw_bg()
     draw_lines()       
+    pygame.draw.rect(screen, "lightgreen", (WIDTH, 0, side_margin, HEIGHT + lower_margin)) 
     pygame.display.update()
     clock.tick(FPS)
